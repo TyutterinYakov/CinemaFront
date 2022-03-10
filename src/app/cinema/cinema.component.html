@@ -1,0 +1,69 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+            <ul *ngIf="cities ">
+                <li [ngClass]="cit==currentCity?'active':''" *ngFor="let cit of cities" class="list-group-item clicable"
+                    (click)="onGetCinema(cit)">
+                    {{cit.name}}
+                </li>
+
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Список кинотеатров
+                </div>
+                <div class="panel-body" *ngIf="this.cinemas!=null">
+                    <ul *ngIf="cinemas" class="nav nav-pills">
+                        <li [ngClass]="c==currentCinema?'active':''" *ngFor="let c of cinemas">
+                            <a (click)="onGetHalls(c)">{{c.name}}</a>
+                        </li>
+                    </ul>
+                    <div class="row" *ngIf="this.halls!=null">
+                        <div *ngFor="let h of halls">
+                            <div class="col-md-6">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">{{h.name}}</div>
+                                        <div class="panel-body" *ngIf="h.seances.length>0">
+                                            <div class="row">
+                                                <div *ngIf="h.seances.length>0">
+                                                <div class="col-md-6">
+                                                    <img class="image" src="{{_cinema.host+'/api/images/'+filmId}}" alt="">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <ul class="list-group">
+                                                        <li class="list-group-item">Сеансы:</li>
+                                                        <li (click)="onGetTicketPlaces(sean)" [ngClass]="sean==currentTicketViews?'active':''" *ngFor="let sean of h.seances" class="clicable list-group-item">
+                                                            <span>{{sean.startedAt}} => Цена: {{sean.price|number:'0.00'}} руб.</span>
+                                                        </li>
+                                                    </ul>
+
+                                                </div>
+                                            </div>
+                                            </div>
+                                            <div *ngIf="currentTicketViews">
+                                                <div *ngIf="this.places">
+                                                    <div class="row"  *ngIf="this.places.length>0">
+                                                        <button class="{{getTicketClass(t)}}" (click)="onSelectTicket(t)" [disabled]="t.reserved==true" *ngFor="let t of places">
+                                                            {{t.number}}
+                                                        </button>
+                                                    </div>
+                                                        <div *ngIf="selectedTicket.length>0">
+                                                            <form #f="ngForm" (ngSubmit)="onPayTickets(f.value)">
+                                                                <br>
+                                                                <button type="submit" class="btn-success btn">Оплатить</button>
+                                                            </form>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
